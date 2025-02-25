@@ -21,3 +21,27 @@ SELECT category, AVG(rating) FROM analytics GROUP BY category ORDER BY AVG(ratin
 
 -- 7. Most expensive app with rating < 3
 SELECT app_name, price, rating FROM analytics WHERE rating < 3 ORDER BY price DESC LIMIT 1;
+
+-- 8. Apps with min install <= 50 and have a rating, ordered by highest rated
+SELECT app_name FROM analytics WHERE min_installs <= 50 AND rating IS NOT NULL ORDER BY rating DESC;
+
+-- 9. App names rated less than 3 with at least 10k reviews
+SELECT app_name FROM analytics WHERE rating < 3 AND reviews >= 10000;
+
+-- 10. Top 10 most reviewed apps that cost 0.10 - 1
+SELECT app_name FROM analytics WHERE price BETWEEN 0.10 AND 1.00 ORDER BY reviews DESC LIMIT 10;
+
+-- 11. Find the most outdated app
+SELECT app_name FROM analytics ORDER BY last_updated LIMIT 1;
+
+-- 12. Find the most expensive app
+SELECT app_name FROM analytics ORDER BY price DESC LIMIT 1;
+
+-- 13. Count all the reviews
+SELECT SUM(reviews) FROM analytics;
+
+-- 14. Find all categories with more than 300 apps
+SELECT category FROM analytics GROUP BY category HAVING COUNT(app_name) > 300;
+
+-- 15. App with highest proportion of min_install to reviews, with apps taht have been installed at least 100000 times
+SELECT app_name, reviews, min_installs, min_installs / reviews AS proportion FROM analytics WHERE min_installs >= 100000 ORDER BY min_installs / reviews DESC LIMIT 1;
