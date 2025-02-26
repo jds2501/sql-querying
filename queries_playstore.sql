@@ -46,6 +46,8 @@ SELECT category FROM analytics GROUP BY category HAVING COUNT(app_name) > 300;
 -- 15. App with highest proportion of min_install to reviews, with apps taht have been installed at least 100000 times
 SELECT app_name, reviews, min_installs, min_installs / reviews AS proportion FROM analytics WHERE min_installs >= 100000 ORDER BY min_installs / reviews DESC LIMIT 1;
 
+-- FS1. Name & rating of top rated apps in each category (apps installed at least 50000 times)
+SELECT app_name, rating FROM analytics a WHERE min_installs >= 50000 AND rating = (SELECT MAX(rating) FROM analytics WHERE category = a.category);
 
 -- FS2. Find all the apps that have a name similar to “facebook”.
 SELECT app_name FROM analytics WHERE app_name ILIKE '%facebook%';
@@ -55,9 +57,3 @@ SELECT app_name FROM analytics WHERE array_length(genres, 1) > 1;
 
 -- FS4. Find all the apps that have education as one of their genres.
 SELECT app_name FROM analytics WHERE 'Education' = ANY(genres);
-
-
-
-
--- FS1. Name & rating of top rated apps in each category (apps installed at least 50000 times)
-SELECT app_name, rating FROM analytics a WHERE min_installs >= 50000 AND rating = (SELECT MAX(rating) FROM analytics WHERE category = a.category);
